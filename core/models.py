@@ -9,7 +9,7 @@ class ActiveManager(models.Manager):
         return super().get_queryset().filter(is_deleted=False)
 
 
-class Basemodel(models.Model):
+class BaseModel(models.Model):
     """Abstract model with timestamps."""
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -19,7 +19,7 @@ class Basemodel(models.Model):
         abstract = True
 
 
-class SofDeleteMixin(models.Model):
+class SoftDeleteMixin(models.Model):
     """Abstract model with soft delete functionality."""
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)

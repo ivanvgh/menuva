@@ -158,7 +158,7 @@ No circular imports — communication only flows downward.
 ## ⚙️ Project Folder Layout
 
 ```
-restaurant_app/
+menuva/
  ├── core/
  ├── users/
  ├── menu/
