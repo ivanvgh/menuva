@@ -1,55 +1,63 @@
+import nested_admin
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.html import format_html
 from .models import MenuVersion, MenuCategory, MenuItem, Item
 
 
-class MenuItemInline(admin.TabularInline):
-    """Inline for items inside each category."""
+class MenuItemInline(nested_admin.NestedTabularInline):
     model = MenuItem
     extra = 1
     autocomplete_fields = ['item']
-    fields = ('item', 'get_base_price', 'custom_price', 'is_available', 'order')
-    readonly_fields = ('get_base_price',)
-
-    def get_base_price(self, obj):
-        return obj.item.base_unit_price if obj and obj.item else '-'
-    get_base_price.short_description = 'Base Unit Price'
+    fields = ('item', 'custom_price', 'is_available', 'order')
+    verbose_name_plural = 'Items:'
 
 
-class MenuCategoryInline(admin.StackedInline):
-    """Inline for categories inside a menu version, with nested menu items."""
+
+class MenuCategoryInline(nested_admin.NestedStackedInline):
     model = MenuCategory
-    extra = 1
-    show_change_link = True
-    fields = ('name', 'description', 'order')
     inlines = [MenuItemInline]
+    extra = 1
+    fields = ('name', 'description', 'order')
 
-    # Django doesn't support nested inlines natively, but we simulate this
-    # by adding a readonly link to edit MenuItems in a related admin page.
-    def get_readonly_fields(self, request, obj=None):
-        return ('edit_items_link',) if obj else ()
+    def get_formset(self, request, obj=None, **kwargs):
+        """Customize the inline formset headers to show category names."""
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.verbose_name = 'Category'
+        formset.verbose_name_plural = 'Categories'
+        return formset
 
-    def edit_items_link(self, obj):
-        if not obj.id:
-            return '-'
-        return format_html(
-            '<a href="/admin/menu/menucategory/{}/change/">Edit Menu Items</a>',
-            obj.id
-        )
-    edit_items_link.short_description = 'Edit Menu Items'
 
 
 @admin.register(MenuVersion)
-class MenuVersionAdmin(admin.ModelAdmin):
-    """Top-level admin for managing menu versions."""
-    list_display = ('name', 'is_active', 'created_at')
+class MenuVersionAdmin(nested_admin.NestedModelAdmin):
+    list_display = ('name', 'is_active', 'created_at', 'preview_link')
     inlines = [MenuCategoryInline]
     search_fields = ('name',)
     list_filter = ('is_active',)
     ordering = ['-created_at']
-    fieldsets = (
-        (None, {'fields': ('name', 'description', 'is_active')}),
-    )
+    readonly_fields = ('deleted_at',)
+
+    class Media:
+        css = {
+            'all': ('admin/custom_inline.css',)
+        }
+
+    def preview_link(self, obj):
+        """Add a link to preview the menu version in list view."""
+        url = reverse('menu:preview-version', args=[obj.pk])
+        return format_html('<a class="button" href="{}" target="_blank">Preview</a>', url)
+
+    preview_link.short_description = 'Preview'
+    preview_link.allow_tags = True
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        """Add a Preview button to the top-right action bar in the detail view."""
+        extra_context = extra_context or {}
+        preview_url = reverse('menu:preview-version', args=[object_id])
+        extra_context['preview_url'] = preview_url
+        return super().change_view(request, object_id, form_url, extra_context=extra_context)
+
 
 
 @admin.register(Item)

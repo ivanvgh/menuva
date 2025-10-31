@@ -1,4 +1,5 @@
 from django.db import migrations
+import uuid
 
 
 def seed_menu_data(apps, schema_editor):
@@ -7,86 +8,115 @@ def seed_menu_data(apps, schema_editor):
     Item = apps.get_model('menu', 'Item')
     MenuItem = apps.get_model('menu', 'MenuItem')
 
-    # Create base menu version
-    main_menu = MenuVersion.objects.create(
-        name='Main Menu 2025',
-        description='Default restaurant menu for 2025',
-        is_active=True
+    # === Crear versión del menú ===
+    version = MenuVersion.objects.create(
+        id=uuid.uuid4(),
+        name='Menú Principal 2025',
+        description='Menú principal del restaurante para el año 2025',
+        is_active=True,
     )
 
-    # Create categories
-    starters = MenuCategory.objects.create(
-        menu_version=main_menu,
-        name='Starters',
-        description='Appetizers and light dishes to start your meal',
-        order=1
+    # === Crear categorías ===
+    entradas = MenuCategory.objects.create(
+        menu_version=version,
+        name='Entradas',
+        description='Platos ligeros para comenzar la comida',
+        order=1,
     )
-    mains = MenuCategory.objects.create(
-        menu_version=main_menu,
-        name='Mains',
-        description='Main course dishes',
-        order=2
+    principales = MenuCategory.objects.create(
+        menu_version=version,
+        name='Platos Principales',
+        description='Platos fuertes y especialidades de la casa',
+        order=2,
     )
-    sides = MenuCategory.objects.create(
-        menu_version=main_menu,
-        name='Sides',
-        description='Complementary side dishes',
-        order=3
+    postres = MenuCategory.objects.create(
+        menu_version=version,
+        name='Postres',
+        description='Dulces y opciones para cerrar la comida',
+        order=3,
+    )
+    bebidas = MenuCategory.objects.create(
+        menu_version=version,
+        name='Bebidas',
+        description='Refrescos, jugos naturales y bebidas calientes',
+        order=4,
     )
 
-    # Create base items
-    items_data = [
-        ('Greek Salad', 'Fresh salad with feta, olives, and tomatoes.', 5.00),
-        ('Tortilla Española', 'Classic Spanish omelette with potatoes.', 4.50),
-        ('Olivas Rellenas', 'Stuffed olives with herbs and spices.', 6.00),
-        ('Verduras con Olivada', 'Grilled vegetables with olive tapenade.', 6.50),
-        ('Lasagne', 'Traditional Italian lasagna with cheese and meat sauce.', 3.00),
-        ('Lenguado', 'Pan-fried sole fish with lemon butter.', 12.00),
-        ('Bacalao Frito', 'Crispy fried cod fish.', 7.00),
-        ('Paella Mixta', 'Traditional mixed paella with seafood and chicken.', 8.50),
-        ('Lomo de Salmón', 'Grilled salmon fillet with herbs.', 11.50),
-        ('Pollo al Horno', 'Oven-roasted chicken with garlic and thyme.', 8.00),
-        ('Fries', 'Crispy golden fries.', 2.00),
-        ('Pepper Potatoes', 'Spicy roasted potatoes.', 7.00),
-        ('Green Salad', 'Fresh mixed greens.', 2.00),
-        ('Coleslaw', 'Creamy cabbage slaw.', 2.00),
-        ('Jacket Potato', 'Baked potato with butter.', 4.00),
-        ('Onion Rings', 'Crispy fried onion rings.', 3.00),
-        ('Fried Beans', 'Fried beans with spices.', 3.00),
-    ]
+    # === Crear platos y bebidas (Items) ===
+    items_data = {
+        # Entradas
+        'Causa Limeña': (16.00, 'Puré de papa amarilla relleno de pollo con mayonesa y palta.'),
+        'Tiradito de Pescado': (22.00, 'Láminas de pescado con crema de ají amarillo y limón.'),
+        'Papa a la Huancaína': (15.00, 'Papas bañadas en salsa de queso y ají amarillo.'),
+        'Tequeños de Queso': (18.00, 'Crujientes tequeños rellenos de queso con guacamole.'),
+        'Ensalada César': (14.00, 'Clásica ensalada con pollo a la parrilla y aderezo César.'),
 
-    item_objects = {}
-    for name, desc, price in items_data:
-        item_objects[name] = Item.objects.create(
+        # Platos Principales
+        'Lomo Saltado': (32.00, 'Salteado de carne, cebolla, tomate y papas fritas.'),
+        'Ají de Gallina': (28.00, 'Guiso de pollo desmenuzado en crema de ají amarillo.'),
+        'Arroz con Mariscos': (34.00, 'Arroz criollo con mariscos, pimientos y especias.'),
+        'Tallarines Verdes con Bistec': (30.00, 'Pasta en salsa de albahaca y bistec a la plancha.'),
+        'Seco de Cordero': (36.00, 'Guiso de cordero en salsa de culantro con frijoles y arroz.'),
+
+        # Postres
+        'Suspiro a la Limeña': (18.00, 'Manjar blanco con merengue al oporto.'),
+        'Mazamorra Morada': (12.00, 'Postre tradicional de maíz morado con frutas secas.'),
+        'Arroz con Leche': (10.00, 'Arroz dulce con canela, leche y pasas.'),
+        'Tarta de Maracuyá': (16.00, 'Tarta con crema de maracuyá y base crocante.'),
+        'Helado Artesanal': (14.00, 'Helado casero de vainilla, chocolate o lúcuma.'),
+
+        # Bebidas
+        'Chicha Morada': (8.00, 'Refresco tradicional de maíz morado con piña y canela.'),
+        'Limonada de Hierbabuena': (9.00, 'Limonada natural con toque de hierbabuena.'),
+        'Maracuyá Frozen': (10.00, 'Bebida helada de maracuyá con hielo frappé.'),
+        'Pisco Sour': (18.00, 'Cóctel peruano con pisco, limón y clara de huevo.'),
+        'Café Americano': (7.00, 'Café negro recién preparado.'),
+    }
+
+    item_objs = {
+        name: Item.objects.create(
             name=name,
             description=desc,
             base_unit_price=price,
-            is_active=True
+            is_active=True,
         )
+        for name, (price, desc) in items_data.items()
+    }
 
-    # Assign menu items by category
-    starters_items = ['Greek Salad', 'Tortilla Española', 'Olivas Rellenas', 'Verduras con Olivada', 'Lasagne']
-    mains_items = ['Lenguado', 'Bacalao Frito', 'Paella Mixta', 'Lomo de Salmón', 'Pollo al Horno']
-    sides_items = ['Fries', 'Pepper Potatoes', 'Green Salad', 'Coleslaw', 'Jacket Potato', 'Onion Rings', 'Fried Beans']
+    # === Asignar platos y bebidas a categorías ===
+    categorias = {
+        entradas: [
+            'Causa Limeña', 'Tiradito de Pescado', 'Papa a la Huancaína',
+            'Tequeños de Queso', 'Ensalada César'
+        ],
+        principales: [
+            'Lomo Saltado', 'Ají de Gallina', 'Arroz con Mariscos',
+            'Tallarines Verdes con Bistec', 'Seco de Cordero'
+        ],
+        postres: [
+            'Suspiro a la Limeña', 'Mazamorra Morada', 'Arroz con Leche',
+            'Tarta de Maracuyá', 'Helado Artesanal'
+        ],
+        bebidas: [
+            'Chicha Morada', 'Limonada de Hierbabuena', 'Maracuyá Frozen',
+            'Pisco Sour', 'Café Americano'
+        ],
+    }
 
-    def create_menu_items(category, item_names):
-        for order, name in enumerate(item_names, start=1):
+    for categoria, item_names in categorias.items():
+        for order, item_name in enumerate(item_names, start=1):
             MenuItem.objects.create(
-                menu_category=category,
-                item=item_objects[name],
-                custom_price=None,  # Use base_unit_price
+                menu_category=categoria,
+                item=item_objs[item_name],
+                custom_price=None,
                 is_available=True,
-                order=order
+                order=order,
             )
-
-    create_menu_items(starters, starters_items)
-    create_menu_items(mains, mains_items)
-    create_menu_items(sides, sides_items)
 
 
 def remove_menu_data(apps, schema_editor):
     MenuVersion = apps.get_model('menu', 'MenuVersion')
-    MenuVersion.objects.filter(name='Main Menu 2025').delete()
+    MenuVersion.objects.filter(name='Menú Principal 2025').delete()
 
 
 class Migration(migrations.Migration):

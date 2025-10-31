@@ -23,4 +23,5 @@ from core import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('menu/', include('menu.urls', namespace='menu')),
+    path('_nested_admin/', include('nested_admin.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

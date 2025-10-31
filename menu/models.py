@@ -1,8 +1,14 @@
+import uuid
+
 from django.db import models
+from django.templatetags.static import static
+
+from core.models import BaseModel, SoftDeleteMixin
 
 
-class MenuVersion(models.Model):
+class MenuVersion(BaseModel, SoftDeleteMixin):
     """Represents a version of the menu (e.g. Summer 2025 Menu)."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
@@ -16,7 +22,7 @@ class MenuVersion(models.Model):
         return self.name
 
 
-class MenuCategory(models.Model):
+class MenuCategory(BaseModel):
     """Represents a section within a menu version (e.g. Starters, Mains, Sides)."""
     menu_version = models.ForeignKey(
         MenuVersion,
@@ -35,7 +41,7 @@ class MenuCategory(models.Model):
         return f'{self.name} ({self.menu_version.name})'
 
 
-class Item(models.Model):
+class Item(BaseModel, SoftDeleteMixin):
     """Represents a master dish item that can appear in multiple menus."""
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField(blank=True)
@@ -49,10 +55,10 @@ class Item(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - S/{str(self.base_unit_price)}'
 
 
-class MenuItem(models.Model):
+class MenuItem(BaseModel):
     """Represents an item in a specific menu category (linked to a master item)."""
     menu_category = models.ForeignKey(
         MenuCategory,
@@ -79,3 +85,9 @@ class MenuItem(models.Model):
     def final_price(self):
         """Returns the effective price for display (custom or base)."""
         return self.custom_price or self.item.base_unit_price
+
+    @property
+    def image_or_default(self):
+        if self.item and self.item.image:
+            return self.item.image.url
+        return static('menu/default-dish.png')
