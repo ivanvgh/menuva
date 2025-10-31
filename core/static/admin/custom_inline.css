@@ -1,0 +1,42 @@
+/* === MENU CATEGORY INLINE (outer block) === */
+.inline-group {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 16px;
+  background-color: var(--body-bg);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Header bar for each MenuCategory */
+.inline-group > h2 {
+  background-color: var(--breadcrumbs-bg) !important;  /* Category header */
+  color: var(--body-fg) !important;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 6px 6px 0 0;
+}
+
+.djn-group .djn-group-nested {
+    float: none;
+    width: auto;
+    margin: 25px 29px 29px 25px;
+    background: transparent;
+}
+
+/* === MENU ITEM INLINE (nested tabular inside a category) === */
+.inline-related h2,
+.inline-related caption {
+  background-color: var(--header-bg) !important;       /* MenuItem header */
+  font-weight: 400;
+  border-bottom: 1px solid var(--border-color);
+  padding: 4px 8px;
+}
+
+/* Optional: tidy up spacing between nested sections */
+.inline-related {
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+  padding-top: 6px;
+  background-color: var(--body-bg);
+}

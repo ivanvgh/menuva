@@ -4,6 +4,10 @@ up-db:
 down-db:
 	docker compose down
 
+reset-db:
+	docker compose down -v --remove-orphans
+	docker compose up -d db
+
 migra:
 	python manage.py makemigrations
 
