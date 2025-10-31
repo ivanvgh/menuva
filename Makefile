@@ -5,7 +5,7 @@ down-db:
 	docker compose down
 
 migrate:
-	python manage.py migrate --settings=restaurant_app.settings
+	python manage.py migrate --settings=menuva.settings
 
 test:
 	pytest -v
