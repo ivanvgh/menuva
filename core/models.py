@@ -24,7 +24,8 @@ class SoftDeleteMixin(models.Model):
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
-    objects = ActiveManager()
+    objects = ActiveManager()          # only active records
+    all_objects = models.Manager()     # includes deleted
 
     class Meta:
         abstract = True

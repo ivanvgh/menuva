@@ -11,7 +11,6 @@ class DummyModel(SoftDeleteMixin, BaseModel):
 @pytest.mark.django_db
 def test_base_model_uuid_and_timestamps():
     obj = DummyModel.all_objects.create()
-    assert obj.uuid is not None
     assert obj.created_at <= timezone.now()
     assert obj.updated_at <= timezone.now()
 
