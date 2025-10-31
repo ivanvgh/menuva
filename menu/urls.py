@@ -1,11 +1,10 @@
-from django.contrib import admin
 from django.urls import path
 
-from .models import Item
-from .views import PreviewMenuView
+from menu import views
 
 app_name = 'menu'
 
 urlpatterns = [
-    path('preview/<int:pk>/', PreviewMenuView.as_view(), name='preview'),
+    path('preview/', views.preview_menu, name='preview-active'),
+    path('preview/<int:version_id>/', views.preview_menu, name='preview-version'),
 ]
