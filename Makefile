@@ -4,8 +4,11 @@ up-db:
 down-db:
 	docker compose down
 
+migra:
+	python manage.py makemigrations
+
 migrate:
-	python manage.py migrate --settings=menuva.settings
+	python manage.py migrate
 
 test:
 	pytest -v
@@ -13,7 +16,7 @@ test:
 lint:
 	black --check . && flake8
 
-run-local:
+run:
 	export DJANGO_ENV=local && python manage.py runserver
 
 run-prod:
