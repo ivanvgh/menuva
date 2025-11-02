@@ -21,6 +21,13 @@ class MenuVersion(BaseModel, SoftDeleteMixin):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        # Ensure only one active MenuVersion at a time
+        activating = self.is_active
+        super().save(*args, **kwargs)
+        if activating:
+            # Deactivate all other versions
+            MenuVersion.objects.exclude(pk=self.pk).update(is_active=False)
 
 class MenuCategory(BaseModel):
     """Represents a section within a menu version (e.g. Starters, Mains, Sides)."""

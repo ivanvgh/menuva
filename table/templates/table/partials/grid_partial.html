@@ -1,0 +1,62 @@
+{% load i18n %}
+{% for table in tables %}
+  {% with color=table.get_status_color %}
+  <a href="{% url 'table:table-detail' table.id %}"
+     class="tile"
+     style="background-color: {{ color }};">
+    <span class="tile-number">T{{ table.number }}</span>
+    <span class="tile-status">{{ table.get_status_display }}</span>
+    {% if table.status == 'OCCUPIED' %}
+      <span class="tile-info">{% trans "Active" %}</span>
+    {% elif table.status == 'NEEDS_HELP' %}
+      <span class="tile-info blink">{% trans "Help!" %}</span>
+    {% else %}
+      <span class="tile-info">{% trans "Free" %}</span>
+    {% endif %}
+  </a>
+  {% endwith %}
+{% empty %}
+  <p class="text-center text-muted mt-4">{% trans "No tables found." %}</p>
+{% endfor %}
+
+<style>
+  /* Elegant compact tile design */
+  .tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 12px;
+    color: #fff;
+    height: 10vh;       /* 10% of viewport height → fits ~10–12 on screen */
+    min-height: 60px;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tile:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.25);
+  }
+
+  /* Smooth gradients per status */
+  .tile[style*="#28a745"] { background: linear-gradient(160deg, #27ae60, #219150); }
+  .tile[style*="#ffc107"] { background: linear-gradient(160deg, #f39c12, #d68910); }
+  .tile[style*="#dc3545"] { background: linear-gradient(160deg, #c0392b, #922b21); }
+
+  /* Text hierarchy */
+  .tile-number { font-weight: 700; font-size: clamp(0.85rem, 2.3vw, 1rem); line-height: 1.1; }
+  .tile-status { font-size: clamp(0.65rem, 1.8vw, 0.8rem); opacity: 0.9; }
+  .tile-info { font-size: clamp(0.6rem, 1.6vw, 0.75rem); margin-top: 1px; }
+
+  /* Blink animation for "Help!" */
+  .blink { animation: blink 1.2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  /* Tight mobile layout */
+  @media (max-width: 480px) {
+    .tile { height: 8.5vh; border-radius: 10px; margin: 0; }
+  }
+</style>
