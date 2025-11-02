@@ -1,0 +1,31 @@
+.order-summary-card {
+  background: #1b1b1b;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.order-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.order-line:last-child { border-bottom: none; }
+.status {
+  color: #f9b44c;
+  font-size: 0.8rem;
+}
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  font-weight: 600;
+}
+.table-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}

@@ -1,0 +1,45 @@
+{% extends "guest/base_guest.html" %}
+{% load static i18n %}
+
+{% block page_styles %}
+<link href="{% static 'css/orders.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block guest_content %}
+<div class="container">
+  <div class="menu-header">
+    <h2>{% trans "Order Summary" %}</h2>
+    <p>{% trans "Track your orders and totals per guest" %}</p>
+  </div>
+
+  {% for guest, summary in guest_summaries.items %}
+    <div class="category-section">
+      <div class="category-title">👤 {{ guest }}</div>
+      <div class="order-summary-card">
+        {% for item in summary.items %}
+          <div class="order-line">
+            <div class="line-left">
+              <strong>{{ item.menu_item.item.name }}</strong>
+              <small class="status">{{ item.get_status_display }}</small>
+            </div>
+            <div class="line-right">
+              <span class="price">S/. {{ item.subtotal }}</span>
+            </div>
+          </div>
+        {% endfor %}
+        <div class="order-total per-guest">
+          <span>{% trans "Subtotal" %}</span>
+          <strong>S/. {{ summary.total }}</strong>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">{% trans "No orders have been placed yet." %}</p>
+  {% endfor %}
+
+  <div class="table-total">
+    <span>{% trans "Table Total" %}</span>
+    <strong>S/. {{ table_total }}</strong>
+  </div>
+</div>
+{% endblock %}

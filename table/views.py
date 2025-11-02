@@ -109,9 +109,10 @@ class GuestQRResolverView(View):
         table = get_object_or_404(Table, qr_uuid=qr_uuid)
         session = active_session_for_table(table)
 
-        if session:
-            return redirect('table:guest-session', session_id=session.id)
-        return render(request, 'table/guest/ask_waiter.html', {'table': table})
+        if not session:
+            return render(request, 'guest/ask_waiter.html', {'table': table})
+
+        return render(request, 'guest/guest_info.html', {"table": table, "session": session})
 
 
 class GuestSessionView(DetailView):

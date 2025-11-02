@@ -1,0 +1,172 @@
+/* ────────────────
+   🌐 Global Setup
+   ──────────────── */
+body {
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem;
+  padding-bottom: 140px; /* avoid overlap with footer bar */
+  box-sizing: border-box;
+}
+
+/* ────────────────
+   🍽️ Menu Styling
+   ──────────────── */
+.menu-header {
+  text-align: center;
+  padding: 1rem 0 0.5rem;
+}
+
+.menu-header h2 {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.menu-header p {
+  color: #bbb;
+  font-size: 0.95rem;
+}
+
+.category-title {
+  color: #f9b44c;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 1.5rem 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.menu-card {
+  display: flex;
+  align-items: center;
+  background-color: #1b1b1b;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.menu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+.menu-card img {
+  width: 28%;
+  object-fit: cover;
+}
+
+.menu-content {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-content h5 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.menu-content small {
+  color: #ccc;
+  font-size: 0.85rem;
+}
+
+.menu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: 700;
+  color: #f9b44c;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.qty-btn {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background-color: #f9b44c;
+  color: #121212;
+}
+
+.qty-input {
+  width: 35px;
+  text-align: center;
+  background: transparent;
+  color: #fff;
+  border: none;
+}
+
+/* ────────────────
+   🧊 Glass Footer Bar
+   ──────────────── */
+.bottom-glass-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: rgba(27, 27, 27, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  z-index: 1000;
+  box-sizing: border-box;
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* ⚙️ Footer Buttons */
+.footer-btn {
+  flex: 1;
+  height: 48px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 0 0.25rem;
+}
+
+/* 🟢 Call Waiter */
+.call-btn {
+  background-color: #ff3b30;
+  color: #fff;
+}
+.call-btn:hover { background-color: #ff4d42; }
+
+/* 🟨 Place Order */
+.order-btn {
+  background-color: #f9b44c;
+  color: #121212;
+}
+.order-btn:hover { background-color: #ffcc66; }

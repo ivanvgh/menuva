@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="menu-header">
+    <h2>{% trans "Need Assistance?" %}</h2>
+    <p>{% trans "Tap below to call your waiter." %}</p>
+  </div>
+  <form method="post" action="{% url 'orders:guest-sos' session.id %}">
+    {% csrf_token %}
+    <button class="place-order" style="background:#ff3b30;color:white;">🚨 {% trans "Call Waiter" %}</button>
+  </form>
+</div>

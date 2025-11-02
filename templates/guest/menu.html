@@ -1,0 +1,70 @@
+{% extends "guest/base_guest.html" %}
+{% load static i18n %}
+
+{% block page_styles %}
+<link href="{% static 'css/menu.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block guest_content %}
+<div class="menu-container">
+  <div class="menu-header">
+    <h2>{{ menu_version.name }}</h2>
+    <p>{% blocktrans %}Hi {{ guest.name }}, please select your items and when you will be ready hit on Place Order{% endblocktrans %}</p>
+  </div>
+
+  <!-- ✅ Keep chips above, same behavior -->
+  <div class="category-chips">
+    {% for category in menu_version.categories.all %}
+      <div class="chip{% if forloop.first %} active{% endif %}" data-tab="cat-{{ category.id }}">
+        {{ category.name }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- ✅ Keep this single main form (will be submitted by bottom bar button) -->
+  <form id="guest-order-form" method="post" action="{% url 'orders:guest-order' session.id %}">
+    {% csrf_token %}
+    {% for category in menu_version.categories.all %}
+      <div class="category-tab{% if forloop.first %} active{% endif %}" id="cat-{{ category.id }}">
+        {% for mitem in category.menu_items.all %}
+        <div class="menu-card">
+          <img src="{{ mitem.image_or_default }}" alt="{{ mitem.item.name }}">
+          <div class="menu-content">
+            <div>
+              <h5>{{ mitem.item.name|upper }}</h5>
+              {% if mitem.item.description %}
+                <small>{{ mitem.item.description }}</small>
+              {% endif %}
+            </div>
+            <div class="menu-footer">
+              <div class="price">S/. {{ mitem.final_price }}</div>
+              <div class="qty-controls">
+                <button type="button" class="qty-btn" onclick="changeQty('{{ mitem.item.id }}', -1)">–</button>
+                <input class="qty-input" type="number" name="qty_{{ mitem.item.id }}" id="qty_{{ mitem.item.id }}" min="0" value="0">
+                <button type="button" class="qty-btn" onclick="changeQty('{{ mitem.item.id }}', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </form>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="{% static 'js/menu_actions.js' %}"></script>
+<script src="{% static 'js/menu_chips.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', bindCategoryTabs);
+
+  // ✅ Allow global "Place Order" button (in base_guest.html) to trigger this form
+  const orderButton = document.querySelector('.order-btn');
+  if (orderButton) {
+    orderButton.addEventListener('click', () => {
+      document.getElementById('guest-order-form')?.submit();
+    });
+  }
+</script>
+{% endblock %}

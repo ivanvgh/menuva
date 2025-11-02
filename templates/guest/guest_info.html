@@ -1,0 +1,8 @@
+{% load i18n %}
+<h2>{% trans "Identify yourself" %}</h2>
+<form method="post" action="{% url 'orders:guest-entry' table.qr_uuid %}">
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="{% trans 'Your name' %}" required>
+  <input type="text" name="dni" placeholder="{% trans 'DNI (optional)' %}">
+  <button class="btn btn-primary mt-2">{% trans "Continue" %}</button>
+</form>

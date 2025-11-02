@@ -1,0 +1,8 @@
+{% load static i18n %}
+{% for m in messages %}
+  <div class="chat-message {% if m.sender %}guest{% else %}waiter{% endif %}">
+    <p>{{ m.text }}</p>
+  </div>
+{% empty %}
+  <p class="text-muted">{% trans "No messages yet." %}</p>
+{% endfor %}

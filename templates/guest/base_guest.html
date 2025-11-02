@@ -1,0 +1,57 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menuva Guest</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="{% static 'css/guest_shared.css' %}" rel="stylesheet">
+  {% block page_styles %}{% endblock %}
+
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+  <!-- ✅ Single Navbar -->
+<nav class="guest-navbar">
+  <a href="{% url 'orders:guest-menu' session.id %}" class="{% if active_tab == 'menu' %}active{% endif %}">
+    {% trans 'Menu' %}
+  </a>
+  <a href="{% url 'orders:guest-orders' session.id %}" class="{% if active_tab == 'orders' %}active{% endif %}">
+    {% trans 'Orders' %}
+  </a>
+  <a href="{% url 'orders:guest-chat' session.id %}" class="{% if active_tab == 'chat' %}active{% endif %}">
+    {% trans 'Chat' %}
+  </a>
+  <a href="{% url 'orders:guest-review' session.id %}" class="{% if active_tab == 'review' %}active{% endif %}">
+    {% trans 'Review' %}
+  </a>
+</nav>
+
+  <!-- ✅ Page Content Placeholder -->
+  <main class="guest-content">
+    {% block guest_content %}{% endblock %}
+  </main>
+
+  <!-- ✅ Shared Floating Buttons -->
+<!-- ✅ Unified Bottom Bar -->
+<div class="bottom-action-bar">
+  <form hx-post="{% url 'orders:guest-sos' session.id %}" hx-swap="none" hx-trigger="click">
+    {% csrf_token %}
+    <button type="submit" class="footer-btn call-btn">🚨 {% trans "Call Waiter" %}</button>
+  </form>
+
+{% if active_tab == 'menu' %}
+<button type="button" class="footer-btn order-btn" onclick="document.querySelector('.menu-container form')?.submit()">
+  🧾 {% trans 'Place Order' %}
+</button>
+{% endif %}
+</div>
+
+
+  {% block page_scripts %}{% endblock %}
+</body>
+</html>

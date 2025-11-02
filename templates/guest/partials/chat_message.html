@@ -1,0 +1,6 @@
+<div class="chat-msg {% if m.sender == 'guest' %}guest-msg{% else %}waiter-msg{% endif %}">
+  <div class="bubble">
+    <span>{{ m.text }}</span>
+    <small class="time">{{ m.timestamp|date:"H:i" }}</small>
+  </div>
+</div>

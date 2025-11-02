@@ -1,0 +1,40 @@
+{% extends "guest/base_guest.html" %}
+{% load static i18n %}
+
+{% block page_styles %}
+<link href="{% static 'css/chat.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block guest_content %}
+<div class="container">
+  <div class="menu-header">
+    <h2>{% trans "Chat with Waiter" %}</h2>
+  </div>
+
+  <div id="chat-box" class="chat-box"
+       hx-get="{% url 'orders:guest-chat-messages' session.id %}"
+       hx-trigger="every 4s"
+       hx-swap="innerHTML">
+    {% for m in messages %}
+      <div class="chat-message {% if m.is_guest %}guest{% else %}waiter{% endif %}">
+        <p>{{ m.message }}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form id="chat-form"
+        hx-post="{% url 'orders:guest-chat' session.id %}"
+        hx-target="#chat-box"
+        hx-swap="beforeend"
+        class="chat-input-container"
+        autocomplete="off">
+    {% csrf_token %}
+    <input id="chat-input" type="text" name="message" placeholder="{% trans 'Type your message...' %}" required>
+    <button type="submit" class="send-btn">➤</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

@@ -49,9 +49,10 @@ def open_session(table_id: int, waiter) -> TableSession:
     return session
 
 
-def close_session(session_id: UUID, staff) -> TableSession:
+def close_session(table_id: int, staff) -> TableSession:
     """Close an existing open session and mark the table as free."""
-    session = TableSession.objects.select_related('table').get(pk=session_id)
+    table = Table.objects.get(pk=table_id)
+    session = active_session_for_table(table)
 
     if session.status != SessionStatus.OPEN:
         raise ValidationError(_('Session is already closed.'))

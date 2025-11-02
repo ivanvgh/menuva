@@ -39,7 +39,7 @@ class Table(BaseModel, SoftDeleteMixin):
         """Constructs the full URL using the request object."""
         # This uses the request object to get the scheme ('http' or 'https') and host
         base_url = request.build_absolute_uri('/')[:-1]  # Gets 'https://www.menuva.com'
-
+        # base_url = 'https://6ec72392d599.ngrok-free.app' # TODO: Remove for deploying
         # Now combine the base URL with the path
         return f'{base_url}{self.get_absolute_url_path}'
 

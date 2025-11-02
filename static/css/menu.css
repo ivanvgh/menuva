@@ -1,0 +1,123 @@
+html, body { overflow-x: hidden; }
+
+/* ✅ Center the menu header title + greeting */
+.menu-header {
+  text-align: center;
+  padding: 1.5rem 0 1rem;
+}
+
+.menu-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.menu-header p {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+.menu-container {
+  position: relative;
+  padding-top: 25px;
+}
+
+
+/* Category Chips */
+.category-chips {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  background: #121212;
+  display: flex;
+  overflow-x: auto;
+  gap: 0.6rem;
+  padding: 0.75rem 0.5rem;
+  scrollbar-width: none;
+  z-index: 800;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.category-chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex-shrink: 0;
+  background-color: #1b1b1b;
+  color: #bbb;
+  border: 1px solid #333;
+  border-radius: 1.2rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip.active {
+  background-color: #f9b44c;
+  color: #121212;
+  border-color: #f9b44c;
+}
+
+/* Category Sections */
+.category-tab { display: none; animation: fadeIn 0.25s ease; }
+.category-tab.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Menu Items */
+.menu-card {
+  display: flex;
+  background: #1b1b1b;
+  border-radius: 12px;
+  padding: 0.8rem;
+  margin: 0.6rem 0;
+  gap: 0.8rem;
+  align-items: center;
+}
+.menu-card img {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.menu-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.menu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.qty-btn {
+  background: #f9b44c;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+.qty-input {
+  width: 38px;
+  text-align: center;
+  border: none;
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+}

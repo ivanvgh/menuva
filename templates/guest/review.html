@@ -1,0 +1,21 @@
+{% extends "guest/base_guest.html" %}
+{% load static i18n %}
+
+{% block page_styles %}
+<link href="{% static 'css/review.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block guest_content %}
+<div class="container">
+  <div class="menu-header">
+    <h2>{% trans "Leave a Review" %}</h2>
+    <p>{% trans "Rate your experience and share feedback." %}</p>
+  </div>
+
+  <form method="post" action="{% url 'orders:guest-review' session.id %}">
+    {% csrf_token %}
+    <textarea name="comment" rows="4" placeholder="{% trans 'Write your review here...' %}"></textarea>
+    <button type="submit" class="btn submit-review">{% trans "Submit Review" %}</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+textarea {
+  width: 100%;
+  border-radius: 10px;
+  padding: 0.6rem;
+  background: #1b1b1b;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  resize: none;
+}
+button.place-order {
+  margin-top: 0.8rem;
+  width: 100%;
+  background: #f9b44c;
+  color: #121212;
+  font-weight: 700;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Table, TableSession
 from .enum import TableStatus, SessionStatus
-from .services import generate_qr_zip_response
+from .services import generate_qr_zip_response, open_session, close_session
 
 
 @admin.register(Table)
@@ -16,7 +16,7 @@ class TableAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     search_fields = ('number', 'qr_uuid')
     readonly_fields = ('qr_uuid',)
-    actions = ['regenerate_qr_uuid', 'download_qr_images']
+    actions = ['regenerate_qr_uuid', 'close_selected_sessions', 'open_selected_sessions', 'download_qr_images']
 
     def changelist_view(self, request, extra_context=None):
         self._request = request  # Store the request object
@@ -57,6 +57,27 @@ class TableAdmin(admin.ModelAdmin):
     def download_qr_images(self, request, queryset):
         return generate_qr_zip_response(queryset, request)
 
+    @admin.action(description=_('Close sessions'))
+    def close_selected_sessions(self, request, queryset):
+        """Close all selected open sessions."""
+        for table in queryset:
+            close_session(table.id, request.user)
+        messages.success(
+            request,
+            _(f'{queryset} session(s) closed successfully.'),
+        )
+
+    @admin.action(description=_('Open sessions'))
+    def open_selected_sessions(self, request, queryset):
+        """Close all selected open sessions."""
+        for table in queryset:
+            open_session(table.id, request.user)
+
+        messages.success(
+            request,
+            _(f'{queryset} session(s) opened successfully.'),
+        )
+
 
 @admin.register(TableSession)
 class TableSessionAdmin(admin.ModelAdmin):
@@ -73,7 +94,6 @@ class TableSessionAdmin(admin.ModelAdmin):
     list_filter = ('status', 'assistance_requested')
     search_fields = ('table__number', 'opened_by__username')
     readonly_fields = ('opened_at', 'closed_at')
-    actions = ['close_selected_sessions']
 
     @admin.display(description=_('Status'))
     def status_colored(self, obj):
@@ -82,13 +102,3 @@ class TableSessionAdmin(admin.ModelAdmin):
         label = obj.get_status_display()
         return format_html(f'<strong style="color:{color}">{label}</strong>')
 
-    @admin.action(description=_('Close selected sessions'))
-    def close_selected_sessions(self, request, queryset):
-        """Close all selected open sessions."""
-        updated = queryset.filter(status=SessionStatus.OPEN).update(
-            status=SessionStatus.CLOSED
-        )
-        messages.success(
-            request,
-            _(f'{updated} session(s) closed successfully.'),
-        )
