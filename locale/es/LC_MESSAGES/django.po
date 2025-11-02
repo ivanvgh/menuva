@@ -1,0 +1,270 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-02 01:44+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: table/admin.py:20
+msgid "QR URL"
+msgstr ""
+
+#: table/admin.py:24 table/admin.py:57
+msgid "Status"
+msgstr ""
+
+#: table/admin.py:31
+msgid "Regenerate QR UUID"
+msgstr ""
+
+#: table/admin.py:37
+msgid "QR UUID regenerated successfully."
+msgstr ""
+
+#: table/admin.py:64
+msgid "Close selected sessions"
+msgstr ""
+
+#: table/admin.py:72
+#, python-brace-format
+msgid "{updated} session(s) closed successfully."
+msgstr ""
+
+#: table/enum.py:7
+msgid "Free"
+msgstr ""
+
+#: table/enum.py:8
+msgid "Occupied"
+msgstr ""
+
+#: table/enum.py:9
+msgid "Needs Help"
+msgstr ""
+
+#: table/enum.py:23
+msgid "Open"
+msgstr ""
+
+#: table/enum.py:24
+msgid "Closed"
+msgstr ""
+
+#: table/models.py:14
+msgid "number"
+msgstr ""
+
+#: table/models.py:15
+msgid "QR UUID"
+msgstr ""
+
+#: table/models.py:17 table/models.py:56
+msgid "status"
+msgstr ""
+
+#: table/models.py:24
+msgid "Table"
+msgstr ""
+
+#: table/models.py:25
+msgid "Tables"
+msgstr ""
+
+#: table/models.py:42
+msgid "ID"
+msgstr ""
+
+#: table/models.py:45
+msgid "table"
+msgstr ""
+
+#: table/models.py:51
+msgid "opened by"
+msgstr ""
+
+#: table/models.py:61
+msgid "opened at"
+msgstr ""
+
+#: table/models.py:62
+msgid "closed at"
+msgstr ""
+
+#: table/models.py:63
+msgid "assistance requested"
+msgstr ""
+
+#: table/models.py:67
+msgid "Table Session"
+msgstr ""
+
+#: table/models.py:68
+msgid "Table Sessions"
+msgstr ""
+
+#: table/models.py:85
+msgid "Only one open session is allowed per table."
+msgstr ""
+
+#: table/services.py:24
+msgid "Table is not free."
+msgstr ""
+
+#: table/services.py:28
+msgid "There is already an active session for this table."
+msgstr ""
+
+#: table/services.py:47
+msgid "Session is already closed."
+msgstr ""
+
+#: table/services.py:64
+msgid "Cannot request assistance for a closed session."
+msgstr ""
+
+#: table/services.py:78
+msgid "Cannot resolve assistance for a closed session."
+msgstr ""
+
+#: table/templates/table/detail.html:7
+#, python-format
+msgid "Table %(table.number)s"
+msgstr ""
+
+#: table/templates/table/detail.html:9
+msgid "Status:"
+msgstr ""
+
+#: table/templates/table/detail.html:15
+msgid "QR URL:"
+msgstr ""
+
+#: table/templates/table/detail.html:20
+msgid "Opened by"
+msgstr ""
+
+#: table/templates/table/detail.html:20
+msgid "at"
+msgstr ""
+
+#: table/templates/table/detail.html:24
+msgid "Close Session"
+msgstr ""
+
+#: table/templates/table/detail.html:30
+msgid "Request Assistance"
+msgstr ""
+
+#: table/templates/table/detail.html:35
+msgid "Resolve Assistance"
+msgstr ""
+
+#: table/templates/table/detail.html:42
+msgid "Open Session"
+msgstr ""
+
+#: table/templates/table/detail.html:46
+msgid "Back to grid"
+msgstr ""
+
+#: table/templates/table/grid.html:4
+msgid "Tables Overview"
+msgstr ""
+
+#: table/templates/table/grid.html:7
+msgid "Restaurant Tables"
+msgstr ""
+
+#: table/templates/table/guest/ask_waiter.html:4
+msgid "Ask Your Waiter"
+msgstr ""
+
+#: table/templates/table/guest/ask_waiter.html:8
+msgid "No active session found"
+msgstr ""
+
+#: table/templates/table/guest/ask_waiter.html:10
+msgid "Please ask your waiter to open your table session."
+msgstr ""
+
+#: table/templates/table/guest/ask_waiter.html:15
+#: table/templates/table/guest/session.html:28
+msgid "Reload QR Page"
+msgstr ""
+
+#: table/templates/table/guest/session.html:4
+msgid "Active Table Session"
+msgstr ""
+
+#: table/templates/table/guest/session.html:8
+msgid "Welcome to Menuva!"
+msgstr ""
+
+#: table/templates/table/guest/session.html:11
+#, python-format
+msgid ""
+"\n"
+"        Your table session for Table %(number)s is now active.\n"
+"      "
+msgstr ""
+
+#: table/templates/table/guest/session.html:16
+msgid "Ordering will be available soon."
+msgstr ""
+
+#: table/templates/table/guest/session.html:19
+msgid "Session Active"
+msgstr ""
+
+#: table/templates/table/guest/session.html:21
+msgid "Opened by:"
+msgstr ""
+
+#: table/templates/table/guest/session.html:22
+msgid "Since:"
+msgstr ""
+
+#: table/templates/table/partials/grid_partial.html:12
+msgid "No tables found."
+msgstr ""
+
+#: table/views.py:57
+msgid "Session opened successfully."
+msgstr ""
+
+#: table/views.py:68 table/views.py:86 table/views.py:98
+msgid "No active session found."
+msgstr ""
+
+#: table/views.py:72
+msgid "Session closed successfully."
+msgstr ""
+
+#: table/views.py:84
+msgid "Assistance requested."
+msgstr ""
+
+#: table/views.py:96
+msgid "Assistance resolved."
+msgstr ""
+
+#: templates/base.html:42
+msgid "All rights reserved."
+msgstr ""
+
+#: templates/includes/messages.html:6
+msgid "Close"
+msgstr ""

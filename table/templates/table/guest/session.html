@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Active Table Session" %}{% endblock %}
+
+{% block content %}
+  <div class="text-center mt-5">
+    <h2 class="text-success">{% trans "Welcome to Menuva!" %}</h2>
+
+    <p class="lead mt-3">
+      {% blocktrans with number=session.table.number %}
+        Your table session for Table {{ number }} is now active.
+      {% endblocktrans %}
+    </p>
+
+    <p>{% trans "Ordering will be available soon." %}</p>
+
+    <div class="mt-4">
+      <span class="badge bg-success">{% trans "Session Active" %}</span>
+      <p class="small text-muted mt-2">
+        {% trans "Opened by:" %} {{ session.opened_by }}<br>
+        {% trans "Since:" %} {{ session.opened_at|date:"SHORT_DATETIME_FORMAT" }}
+      </p>
+    </div>
+
+    <div class="mt-4">
+      <a href="{{ session.table.qr_url }}" class="btn btn-outline-secondary">
+        {% trans "Reload QR Page" %}
+      </a>
+    </div>
+  </div>
+{% endblock %}

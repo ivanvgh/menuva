@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Ask Your Waiter" %}{% endblock %}
+
+{% block content %}
+  <div class="text-center mt-5">
+    <h2 class="text-danger">{% trans "No active session found" %}</h2>
+    <p class="lead mt-3">
+      {% trans "Please ask your waiter to open your table session." %}
+    </p>
+
+    <div class="mt-4">
+      <a href="{{ table.qr_url }}" class="btn btn-outline-secondary">
+        {% trans "Reload QR Page" %}
+      </a>
+    </div>
+  </div>
+{% endblock %}

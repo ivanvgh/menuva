@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ table.number }}{% endblock %}
+
+{% block content %}
+  <h2>{% blocktrans %}Table {{ table.number }}{% endblocktrans %}</h2>
+  <p>
+    <strong>{% trans "Status:" %}</strong>
+    <span style="color: {{ table.get_status_color }};">
+      {{ table.get_status_display }}
+    </span>
+  </p>
+  <p>
+    <strong>{% trans "QR URL:" %}</strong>
+    <a href="{{ table.qr_url }}">{{ table.qr_url }}</a>
+  </p>
+
+  {% if session %}
+    <p>{% trans "Opened by" %} {{ session.opened_by }} ({% trans "at" %} {{ session.opened_at }})</p>
+    {% if session.status == 'OPEN' %}
+      <form method="post" action="{% url 'table:table-close' table.id %}">
+        {% csrf_token %}
+        <button class="btn btn-danger">{% trans "Close Session" %}</button>
+      </form>
+
+      {% if not session.assistance_requested %}
+        <form method="post" action="{% url 'table:table-assist' table.id %}">
+          {% csrf_token %}
+          <button class="btn btn-warning mt-2">{% trans "Request Assistance" %}</button>
+        </form>
+      {% else %}
+        <form method="post" action="{% url 'table:table-resolve' table.id %}">
+          {% csrf_token %}
+          <button class="btn btn-success mt-2">{% trans "Resolve Assistance" %}</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  {% else %}
+    <form method="post" action="{% url 'table:table-open' table.id %}">
+      {% csrf_token %}
+      <button class="btn btn-success">{% trans "Open Session" %}</button>
+    </form>
+  {% endif %}
+
+  <p class="mt-3"><a href="{% url 'table:tables-grid' %}" class="btn btn-secondary">&larr; {% trans "Back to grid" %}</a></p>
+{% endblock %}
