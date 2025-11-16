@@ -5,28 +5,21 @@
 
 {% block content %}
 <div class="tables-wrapper">
-  <h2 class="page-title">{% trans "Restaurant Tables" %}</h2>
+  <h2 class="page-title">{% trans "Tables" %}</h2>
 
   <div id="tables-grid"
-       class="tables-grid"
        hx-get="{% url 'table:tables-grid-refresh' %}"
        hx-trigger="load, every 5s"
        hx-target="#tables-grid"
-       hx-swap="innerHTML">
+       hx-swap="innerHTML transition:true">
     {% include "table/partials/grid_partial.html" %}
   </div>
 </div>
 
 <style>
-  :root {
-    --gap: 0.35rem;
-  }
-
-  /* Full width container, no Bootstrap limits */
   .tables-wrapper {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
-    padding: 0.3rem;
     background-color: #f9fafb;
     overflow-x: hidden;
   }
@@ -34,33 +27,14 @@
   .page-title {
     text-align: center;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #1c1c1c;
-    margin: 0.2rem 0 0.6rem 0;
+    margin: 0.4rem 0 0.6rem 0;
   }
 
-  /* Pure CSS Grid — fills the whole screen */
   .tables-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    gap: var(--gap);
-    justify-items: center;
-    align-items: start;
-    padding: 0.3rem;
     width: 100%;
-  }
-
-  /* Responsive tweaks */
-  @media (min-width: 480px) {
-    .tables-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
-  }
-
-  @media (min-width: 768px) {
-    .tables-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
-  }
-
-  @media (min-width: 1200px) {
-    .tables-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    height: calc(100vh - 100px);
   }
 </style>
 {% endblock %}

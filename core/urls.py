@@ -25,5 +25,6 @@ urlpatterns = [
     path('menu/', include('menu.urls', namespace='menu')),
     path('table/', include('table.urls', namespace='table')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path('kitchen/', include('kitchen.urls', namespace='kitchen')),
     path('_nested_admin/', include('nested_admin.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

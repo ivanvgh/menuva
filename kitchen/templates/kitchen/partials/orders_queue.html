@@ -1,0 +1,107 @@
+{% if orders %}
+<div class="row row-cols-1 row-cols-md-2 g-3">
+  {% for order in orders %}
+  <div class="col">
+    <div class="card shadow-sm h-100 border-0 rounded-3">
+      <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white py-2 px-3 rounded-top-3">
+        <strong>Table {{ order.session.table.number }}</strong>
+        <span class="badge bg-info text-dark fs-6">{{ order.status }}</span>
+      </div>
+
+      <div class="card-body bg-light p-2">
+        {% for item in order.filtered_items %}
+        <div class="order-item d-flex justify-content-between align-items-center mb-2 px-2 py-2 bg-white rounded-3 shadow-sm">
+          <div class="flex-grow-1">
+            <div class="item-name">{{ item.quantity }} x {{ item.menu_item.item.name }} </div>
+            <div class="item-meta small text-muted">
+              <span class="item-time text-primary fw-semibold">({{ item.time_since_created }})</span>
+              <span class="item-status ms-2">{{ item.status }}</span>
+            </div>
+          </div>
+          <div class="ms-2">
+            {% if order.status == 'QUEUED' %}
+            <button
+              hx-post="{% url 'kitchen:order-status' order.id %}"
+              hx-vals='{"status":"PREPARING"}'
+              hx-target="closest('.card')"
+              class="btn btn-cook btn-prepare"
+              title="Start preparing">
+              ➜
+            </button>
+            {% elif order.status == 'PREPARING' %}
+            <button
+              hx-post="{% url 'kitchen:order-status' order.id %}"
+              hx-vals='{"status":"READY"}'
+              hx-target="closest('.card')"
+              class="btn btn-cook btn-ready"
+              title="Mark ready">
+              ✓
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted text-center mt-3">No active orders.</p>
+{% endif %}
+
+<style>
+/* Base */
+.card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.order-item {
+  transition: transform 0.1s ease-in-out;
+}
+.order-item:hover {
+  transform: scale(1.02);
+}
+
+/* Typography */
+.item-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.item-status {
+  color: #555;
+}
+.item-time {
+  color: #007bff;
+}
+
+/* Cook buttons */
+.btn-cook {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  transition: transform 0.15s, background-color 0.15s;
+}
+.btn-cook:hover {
+  transform: scale(1.15);
+}
+.btn-prepare {
+  background-color: #f0ad4e;
+}
+.btn-prepare:hover {
+  background-color: #ec971f;
+}
+.btn-ready {
+  background-color: #28a745;
+}
+.btn-ready:hover {
+  background-color: #218838;
+}
+</style>

@@ -2,6 +2,7 @@ import uuid
 from decimal import Decimal
 from django.db import models
 from django.utils import timezone
+from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, SoftDeleteMixin
 from table.models import TableSession
@@ -61,7 +62,11 @@ class Order(BaseModel, SoftDeleteMixin):
         verbose_name_plural = _("Orders")
 
     def __str__(self):
-        return f"Order {self.id} - {self.session.table.number} [{self.status}]"
+        return _('Order %(id)s - Table %(number)s [%(status)s]') % {
+            'id': self.id,
+            'number': self.session.table.number,
+            'status': self.status,
+        }
 
 
 class OrderItem(BaseModel, SoftDeleteMixin):
@@ -90,3 +95,11 @@ class OrderItem(BaseModel, SoftDeleteMixin):
 
     def __str__(self):
         return f"{self.menu_item.item.name} x{self.quantity} by {self.guest.name}"
+
+    def time_since_created(self):
+        """Tiempo legible desde que se pidió este ítem."""
+        if not self.created_at:
+            return ''
+        delta = timesince(self.created_at, timezone.now())
+        # timesince devuelve "2 minutes", "1 hour, 3 minutes" → solo tomamos la primera parte
+        return _('hace %(time)s') % {'time': delta.split(',')[0]}

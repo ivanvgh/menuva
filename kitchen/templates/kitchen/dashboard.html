@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid py-3">
+        <h2 class="text-center mb-3">🍳 Kitchen Dashboard</h2>
+
+        <!-- FILTER BAR -->
+        <div id="filters" class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+            <!-- Categories -->
+            <div class="d-flex flex-wrap align-items-center gap-1">
+                <strong class="me-2">Categories:</strong>
+                {% for cat in categories %}
+                    <button
+                            class="btn btn-outline-primary btn-xs category-filter px-2 py-1"
+                            data-category="{{ cat.id }}">
+                        {{ cat.name }}
+                    </button>
+                {% endfor %}
+            </div>
+
+            <div class="vr mx-3 d-none d-md-block"></div>
+
+            <!-- Statuses -->
+            <div class="d-flex flex-wrap align-items-center gap-1">
+                <strong class="me-2">Statuses:</strong>
+                {% for status in statuses %}
+                    <button
+                            class="btn btn-outline-secondary btn-xs status-filter px-2 py-1"
+                            data-status="{{ status }}">
+                        {{ status }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- QUEUE SECTION -->
+        <div id="orders-queue"
+             hx-get="{% url 'kitchen:queue-refresh' %}"
+             hx-trigger="load"
+             hx-target="this">
+            {% include 'kitchen/partials/orders_queue.html' %}
+        </div>
+    </div>
+
+    <script>
+        let activeCategories = new Set();
+        let activeStatuses = new Set();
+
+        function refreshOrders() {
+            const params = new URLSearchParams();
+            if (activeCategories.size) params.set("category", Array.from(activeCategories).join(","));
+            if (activeStatuses.size) params.set("status", Array.from(activeStatuses).join(","));
+            htmx.ajax("GET", `{% url 'kitchen:queue-refresh' %}?${params.toString()}`, "#orders-queue");
+        }
+
+        document.querySelectorAll(".category-filter").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.dataset.category;
+                if (activeCategories.has(id)) activeCategories.delete(id);
+                else activeCategories.add(id);
+                btn.classList.toggle("active");
+                refreshOrders();
+            });
+        });
+
+        document.querySelectorAll(".status-filter").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const s = btn.dataset.status;
+                if (activeStatuses.has(s)) activeStatuses.delete(s);
+                else activeStatuses.add(s);
+                btn.classList.toggle("active");
+                refreshOrders();
+            });
+        });
+
+        setInterval(refreshOrders, 5000);
+    </script>
+
+    <style>
+        .row-cols-md-2 > .col {
+            display: flex;
+        }
+
+        .card {
+            flex: 1;
+        }
+
+        .btn-xs {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.4rem;
+        }
+
+        .btn-xs.active {
+            background-color: var(--bs-primary);
+            color: #fff;
+        }
+
+        .vr {
+            border-left: 1px solid #ccc;
+            height: 1.5rem;
+        }
+
+        .order-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.item-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.item-status {
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  color: #333;
+}
+
+.item-time {
+  font-weight: 600;
+  color: #007bff;
+  margin-left: 6px;
+}
+
+    </style>
+{% endblock %}
